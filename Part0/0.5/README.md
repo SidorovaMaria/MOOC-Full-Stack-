@@ -19,7 +19,7 @@ sequenceDiagram
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
-    server-->>browser: [[
+    server-->>browser: [
     {
         "content": "",
         "date": "2024-12-21T04:53:45.772Z"
