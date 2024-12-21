@@ -3,17 +3,18 @@ const Header = (props) => {
 };
 const Content = (props) => {
   return (
-    <>
-      <p>
-        {props.part1} {props.e1}
-      </p>
-      <p>
-        {props.part2} {props.e2}
-      </p>
-      <p>
-        {props.part3} {props.e3}
-      </p>
-    </>
+    <div>
+      <Part part1={props.part1} e1={props.e1} />
+      <Part part1={props.part2} e1={props.e2} />{" "}
+      <Part part1={props.part3} e1={props.e3} />
+    </div>
+  );
+};
+const Part = (props) => {
+  return (
+    <p>
+      {props.part1} {props.e1}
+    </p>
   );
 };
 const Total = (props) => {
