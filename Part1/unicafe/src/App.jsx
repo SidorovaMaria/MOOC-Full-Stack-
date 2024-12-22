@@ -33,9 +33,10 @@ const Button = (props) => {
 };
 const StatisticLine = ({ text, value }) => {
   return (
-    <p style={{ fontWeight: "500", margin: "2px" }}>
-      {text} <span style={{ fontWeight: "bold" }}>{value}</span>
-    </p>
+    <tr style={{ fontWeight: "500", margin: "2px" }}>
+      <td>{text}</td>
+      <td style={{ fontWeight: "bold" }}>{value}</td>
+    </tr>
   );
 };
 
@@ -47,12 +48,19 @@ const Statistics = ({ total, score, good, bad, neutral }) => {
   }
   return (
     <>
-      <StatisticLine text="Good:" value={good} />
-      <StatisticLine text="Neutral:" value={neutral} />
-      <StatisticLine text="Bad:" value={bad} />
-      <StatisticLine text="Average:" value={score / total || 0} />
+      <table>
+        <tbody>
+          <StatisticLine text="Good:" value={good} />
+          <StatisticLine text="Neutral:" value={neutral} />
+          <StatisticLine text="Bad:" value={bad} />
+          <StatisticLine text="Average:" value={score / total || 0} />
 
-      <StatisticLine text="Positive:" value={good / total + "%" || 0} />
+          <StatisticLine
+            text="Positive:"
+            value={(good / total) * 100 + "%" || 0}
+          />
+        </tbody>
+      </table>
     </>
   );
 };
@@ -101,25 +109,17 @@ const App = () => {
         />
       </div>
       <h2>Statistics</h2>
-      <div style={{ display: "flex", gap: "2px", flexDirection: "column" }}>
-        <Statistics
-          total={total}
-          score={score}
-          good={good}
-          bad={bad}
-          neutral={neutral}
-        >
-          <p style={{ fontWeight: "500", margin: "2px" }}>
-            Neutral: <span style={{ fontWeight: "bold" }}>{neutral}</span>
-          </p>
-          <p style={{ fontWeight: "500", margin: "2px" }}>
-            Bad: <span style={{ fontWeight: "bold" }}>{bad}</span>
-          </p>
-          <p style={{ fontWeight: "500", margin: "2px" }}>
-            All: <span style={{ fontWeight: "bold" }}>{total}</span>
-          </p>
-        </Statistics>
-      </div>
+      <div
+        style={{ display: "flex", gap: "2px", flexDirection: "column" }}
+      ></div>
+
+      <Statistics
+        total={total}
+        score={score}
+        good={good}
+        bad={bad}
+        neutral={neutral}
+      />
     </div>
   );
 };
