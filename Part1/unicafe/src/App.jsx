@@ -31,8 +31,15 @@ const Button = (props) => {
     </button>
   );
 };
+const StatisticLine = ({ text, value }) => {
+  return (
+    <p style={{ fontWeight: "500", margin: "2px" }}>
+      {text} <span style={{ fontWeight: "bold" }}>{value}</span>
+    </p>
+  );
+};
 
-const Statistics = ({ total, score, good, children }) => {
+const Statistics = ({ total, score, good, bad, neutral }) => {
   if (!total) {
     return (
       <p style={{ fontWeight: "500", margin: "2px" }}>No Feedback given</p>
@@ -40,15 +47,12 @@ const Statistics = ({ total, score, good, children }) => {
   }
   return (
     <>
-      {children}
-      <p style={{ fontWeight: "500", margin: "2px" }}>
-        Average:{" "}
-        <span style={{ fontWeight: "bold" }}>{score / total || 0}</span>
-      </p>
-      <p style={{ fontWeight: "500", margin: "2px" }}>
-        Positive:{" "}
-        <span style={{ fontWeight: "bold" }}>{good / total || 0}%</span>
-      </p>
+      <StatisticLine text="Good:" value={good} />
+      <StatisticLine text="Neutral:" value={neutral} />
+      <StatisticLine text="Bad:" value={bad} />
+      <StatisticLine text="Average:" value={score / total || 0} />
+
+      <StatisticLine text="Positive:" value={good / total + "%" || 0} />
     </>
   );
 };
@@ -98,10 +102,13 @@ const App = () => {
       </div>
       <h2>Statistics</h2>
       <div style={{ display: "flex", gap: "2px", flexDirection: "column" }}>
-        <Statistics total={total} score={score} good={good}>
-          <p style={{ fontWeight: "500", margin: "2px" }}>
-            Good: <span style={{ fontWeight: "bold" }}>{good}</span>
-          </p>
+        <Statistics
+          total={total}
+          score={score}
+          good={good}
+          bad={bad}
+          neutral={neutral}
+        >
           <p style={{ fontWeight: "500", margin: "2px" }}>
             Neutral: <span style={{ fontWeight: "bold" }}>{neutral}</span>
           </p>
