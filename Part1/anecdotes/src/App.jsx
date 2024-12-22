@@ -35,15 +35,26 @@ const App = () => {
         index === selected ? { ...item, votes: item.votes + 1 } : item
       )
     );
+    setmostVotes(
+      Allvotes.reduce(
+        (max, item) => (item.votes > max.votes ? item : max),
+        Allvotes[0]
+      )
+    );
   };
+
+  const [mostVotes, setmostVotes] = useState(Allvotes[selected]);
+
   return (
     <div>
       <h2>{Allvotes[selected].anecdote}</h2>
       <h4>Has {Allvotes[selected].votes} votes</h4>
       <div>
-        <button onClick={onClick}>Next Anecdote</button>
         <button onClick={onVote}>Vote</button>
+        <button onClick={onClick}>Next Anecdote</button>
       </div>
+      <h2>Anecdote with most votes</h2>
+      <h4>{mostVotes.anecdote}</h4>
     </div>
   );
 };
