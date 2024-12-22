@@ -32,6 +32,21 @@ const Button = (props) => {
   );
 };
 
+const Statistics = ({ total, score, good }) => {
+  return (
+    <>
+      <p style={{ fontWeight: "500", margin: "2px" }}>
+        Average:{" "}
+        <span style={{ fontWeight: "bold" }}>{score / total || 0}</span>
+      </p>
+      <p style={{ fontWeight: "500", margin: "2px" }}>
+        Positive:{" "}
+        <span style={{ fontWeight: "bold" }}>{good / total || 0}%</span>
+      </p>
+    </>
+  );
+};
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -89,14 +104,7 @@ const App = () => {
         <p style={{ fontWeight: "500", margin: "2px" }}>
           All: <span style={{ fontWeight: "bold" }}>{total}</span>
         </p>
-        <p style={{ fontWeight: "500", margin: "2px" }}>
-          Average:{" "}
-          <span style={{ fontWeight: "bold" }}>{score / total || 0}</span>
-        </p>
-        <p style={{ fontWeight: "500", margin: "2px" }}>
-          Positive:{" "}
-          <span style={{ fontWeight: "bold" }}>{good / total || 0}%</span>
-        </p>
+        <Statistics total={total} score={score} good={good} />
       </div>
     </div>
   );
