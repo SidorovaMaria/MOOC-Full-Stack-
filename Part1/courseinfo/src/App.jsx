@@ -24,6 +24,7 @@ const Total = (props) => {
   });
   return <p>Number of exercises: {total}</p>;
 };
+
 const App = () => {
   const course = {
     name: "Half Stack application development",
