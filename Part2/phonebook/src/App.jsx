@@ -4,6 +4,7 @@ import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import axios from "axios";
 import { useEffect } from "react";
+import personService from "./server/person";
 const App = () => {
   const [persons, setPersons] = useState([
     // { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -12,9 +13,8 @@ const App = () => {
     // { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      const persons = response.data;
-      setPersons(persons);
+    personService.getAll().then((ininitialNotes) => {
+      setPersons(ininitialNotes);
     });
   }, []);
 

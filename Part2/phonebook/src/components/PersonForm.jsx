@@ -1,19 +1,30 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
+import personService from "../server/person";
 
 const PersonForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
   const OnNameSubmit = (e) => {
     e.preventDefault();
+
     if (persons.some((person) => person.name === newName)) {
       alert(`${newName} is already added to the phonebook`);
       return;
     }
-    setPersons((prevState) => [
-      ...prevState,
-      { name: newName, number: phoneNumber },
-    ]);
+    const PersonObj = {
+      name: newName,
+      number: phoneNumber,
+    };
+    // axios.post("http://localhost:3001/persons", PersonObj).then((response) => {
+    //   console.log(response.data);
+    // });
+    personService.create(PersonObj).then((returnedNode) => {
+      setPersons((prevState) => [...prevState, returnedNode]);
+    });
+
     setNewName("");
     setPhoneNumber("");
   };
