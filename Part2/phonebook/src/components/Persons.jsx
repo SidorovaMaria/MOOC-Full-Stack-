@@ -1,8 +1,8 @@
 import React from "react";
 import personService from "../server/person";
 const Persons = ({ persons, filter, setPersons }) => {
-  const deletePerson = (id) => {
-    if (window.confirm("Do you really want to delete the user?")) {
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Do you really want to delete ${name}?`)) {
       personService
         .deleteObj(id)
         .then(setPersons(persons.filter((n) => n.id !== id)));
@@ -24,7 +24,9 @@ const Persons = ({ persons, filter, setPersons }) => {
               <p>
                 {person.name} - <span>{person.number}</span>
               </p>
-              <button onClick={() => deletePerson(person.id)}>Delete</button>
+              <button onClick={() => deletePerson(person.id, person.name)}>
+                Delete
+              </button>
             </div>
           );
         })}
