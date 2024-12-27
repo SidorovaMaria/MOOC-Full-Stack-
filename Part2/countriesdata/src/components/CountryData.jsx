@@ -15,7 +15,7 @@ const CountryData = ({ country }) => {
       </p>
       {/* Languages */}
       <div className="languages">
-        <h4>Languages:</h4>
+        Languages:
         <ul>
           {Object.values(country.languages).map((lang, index) => (
             <li key={index}>{lang}</li>
@@ -23,7 +23,7 @@ const CountryData = ({ country }) => {
         </ul>
       </div>
       {/* Flag */}
-      <div>
+      <div className="img-comtainer">
         <img src={country.flags.png} alt="flag" />
       </div>
     </div>

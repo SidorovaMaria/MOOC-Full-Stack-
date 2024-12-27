@@ -41,13 +41,19 @@ label {
 .all-countries {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 1.5rem;
+  column-gap: 4rem;
+  letter-spacing: 1px;
 }
 .all-countries p {
   font-size: 1.2rem;
   padding: 0.25rem;
   font-weight: 600;
-  letter-spacing: 1px;
+}
+.all-countries div {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
 }
 .all-countries p::first-letter {
   font-weight: 700;
@@ -76,6 +82,7 @@ label {
   text-align: center;
   padding: 0.5rem;
 }
+
 .languages li {
   list-style: none;
   text-align: center;
@@ -84,4 +91,21 @@ label {
   font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: 1px;
+}
+.btn-show {
+  width: fit-content;
+  background-color: transparent;
+  border: 2px solid wheat;
+  padding: 0.5rem 1rem;
+  color: wheat;
+  font-weight: 600;
+  margin: 0.25rem 0;
+  border-radius: 10px;
+}
+.img-comtainer {
+  margin: auto;
+  background-color: red;
+}
+img {
+  width: 100%;
 }
