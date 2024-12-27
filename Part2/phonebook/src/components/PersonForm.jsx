@@ -10,23 +10,40 @@ const PersonForm = ({ setPersons, persons }) => {
   const OnNameSubmit = (e) => {
     e.preventDefault();
 
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
-      return;
+    const existingPerson = persons.find((person) => person.name === newName);
+    if (existingPerson) {
+      const confirmUpdate = window.confirm(
+        `${newName} is already added to the phonebook. Replace the old number with a new one?`
+      );
+      if (confirmUpdate) {
+        const updatedPerson = { ...existingPerson, number: phoneNumber };
+        personService
+          .update(existingPerson.id, updatedPerson)
+          .then((updatedData) => {
+            setPersons(
+              persons.map((person) =>
+                person.id === existingPerson.id ? updatedData : person
+              )
+            );
+            setNewName("");
+            setPhoneNumber("");
+          });
+      }
+    } else {
+      const PersonObj = {
+        name: newName,
+        number: phoneNumber,
+      };
     }
-    const PersonObj = {
-      name: newName,
-      number: phoneNumber,
-    };
+    personService.create(PersonObj).then((returnedNode) => {
+      setPersons((prevState) => [...prevState, returnedNode]);
+      setNewName("");
+      setPhoneNumber("");
+    });
+
     // axios.post("http://localhost:3001/persons", PersonObj).then((response) => {
     //   console.log(response.data);
     // });
-    personService.create(PersonObj).then((returnedNode) => {
-      setPersons((prevState) => [...prevState, returnedNode]);
-    });
-
-    setNewName("");
-    setPhoneNumber("");
   };
 
   return (
