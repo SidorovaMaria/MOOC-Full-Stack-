@@ -29,9 +29,7 @@ function App() {
         <div className="all-countries">
           {FilterCountries.map((country, index) => (
             <div>
-              <p className="" key={index}>
-                {country.name.common}
-              </p>
+              <p className="">{country.name.common}</p>
               <button
                 onClick={() => setSearchQuery(country.name.common)}
                 className="btn-show"
