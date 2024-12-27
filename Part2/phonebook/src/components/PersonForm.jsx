@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import personService from "../server/person";
 
-const PersonForm = ({ setPersons, persons }) => {
+const PersonForm = ({ setPersons, persons, setMessage }) => {
   const [newName, setNewName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -25,6 +25,10 @@ const PersonForm = ({ setPersons, persons }) => {
                 person.id === existingPerson.id ? updatedData : person
               )
             );
+            setMessage(`Number changed for ${existingPerson.name}`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
             setNewName("");
             setPhoneNumber("");
           });
@@ -34,12 +38,16 @@ const PersonForm = ({ setPersons, persons }) => {
         name: newName,
         number: phoneNumber,
       };
+      personService.create(PersonObj).then((returnedNode) => {
+        setPersons((prevState) => [...prevState, returnedNode]);
+        setMessage(`Added ${PersonObj.name}`);
+        setTimeout(() => {
+          setMessage("");
+        }, 5000);
+        setNewName("");
+        setPhoneNumber("");
+      });
     }
-    personService.create(PersonObj).then((returnedNode) => {
-      setPersons((prevState) => [...prevState, returnedNode]);
-      setNewName("");
-      setPhoneNumber("");
-    });
 
     // axios.post("http://localhost:3001/persons", PersonObj).then((response) => {
     //   console.log(response.data);

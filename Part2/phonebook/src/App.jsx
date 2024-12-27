@@ -3,15 +3,13 @@ import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import axios from "axios";
+import "./index.css";
 import { useEffect } from "react";
 import personService from "./server/person";
+import Notification from "./components/Notification";
 const App = () => {
-  const [persons, setPersons] = useState([
-    // { name: "Arto Hellas", number: "040-123456", id: 1 },
-    // { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    // { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    // { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
+  const [message, setMessage] = useState(null);
   useEffect(() => {
     personService.getAll().then((ininitialNotes) => {
       setPersons(ininitialNotes);
@@ -23,12 +21,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <div>
         <Filter filter={filter} setFilter={setFilter} />
       </div>
 
       <h2>Add new person</h2>
-      <PersonForm persons={persons} setPersons={setPersons} />
+      <PersonForm
+        persons={persons}
+        setPersons={setPersons}
+        setMessage={setMessage}
+      />
 
       <h2>Numbers</h2>
 
