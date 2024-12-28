@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+app.use(express.json());
 let persons = [
   {
     id: "1",
@@ -24,6 +24,10 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+  return Math.floor(Math.random() * 1000000000); // Generate a random ID between 0 and 1 billion
+};
+
 // All persons data
 app.get("/api/persons", (request, response) => {
   response.json(persons);
@@ -44,6 +48,24 @@ app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id;
   persons = persons.filter((person) => person.id !== id);
   response.status(204).end();
+});
+
+// Create new entry
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+  //if name or number is missing
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "Missing content",
+    });
+  }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  };
+  persons = persons.concat(person);
+  response.json(person);
 });
 
 //Get Info
