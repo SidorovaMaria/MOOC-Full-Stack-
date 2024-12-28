@@ -1,5 +1,17 @@
 const express = require("express");
+var morgan = require("morgan");
 const app = express();
+
+// app.use(morgan("tiny"));
+morgan.token("body", (req) => {
+  // Only log body for POST requests (to avoid logging in every request)
+  if (req.method === "POST") {
+    return JSON.stringify(req.body); // Log the request body as a string
+  }
+  return ""; // For non-POST requests, return an empty string
+});
+app.use(morgan(":method :url :status :response-time ms - :body"));
+
 app.use(express.json());
 let persons = [
   {
