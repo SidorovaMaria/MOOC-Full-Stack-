@@ -50,12 +50,12 @@ app.delete("/api/notes/:id", (request, response, next) => {
 // Create new entry
 app.post("/api/persons", (request, response, next) => {
   const body = request.body;
-  //if name or number is missing
-  // if (!body.name || !body.number) {
-  //   return response.status(400).json({
-  //     error: "Missing content",
-  //   });
-  // }
+  // if name or number is missing
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "Missing content",
+    });
+  }
   const person = new Person({
     name: body.name,
     number: body.number,
