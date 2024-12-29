@@ -1,11 +1,13 @@
 const express = require("express");
-var morgan = require("morgan");
+const morgan = require("morgan");
+require("dotenv").config();
 const app = express();
+
 const cors = require("cors");
-
+const Person = require("./models/person");
 app.use(cors());
+app.use(express.json());
 
-// app.use(morgan("tiny"));
 morgan.token("body", (req) => {
   // Only log body for POST requests (to avoid logging in every request)
   if (req.method === "POST") {
@@ -15,34 +17,33 @@ morgan.token("body", (req) => {
 });
 app.use(morgan(":method :url :status :response-time ms - :body"));
 
-app.use(express.json());
-let persons = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-  {
-    id: "5",
-    name: "Maria Sidorova",
-    number: "20-23-6423122",
-  },
-];
+// let persons = [
+//   {
+//     id: "1",
+//     name: "Arto Hellas",
+//     number: "040-123456",
+//   },
+//   {
+//     id: "2",
+//     name: "Ada Lovelace",
+//     number: "39-44-5323523",
+//   },
+//   {
+//     id: "3",
+//     name: "Dan Abramov",
+//     number: "12-43-234345",
+//   },
+//   {
+//     id: "4",
+//     name: "Mary Poppendieck",
+//     number: "39-23-6423122",
+//   },
+//   {
+//     id: "5",
+//     name: "Maria Sidorova",
+//     number: "20-23-6423122",
+//   },
+// ];
 
 const generateId = () => {
   return Math.floor(Math.random() * 1000000000); // Generate a random ID between 0 and 1 billion
@@ -50,25 +51,23 @@ const generateId = () => {
 
 // All persons data
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  Person.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 // Get specific person
 app.get("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
-  if (person) {
+  Person.findById(request.params.id).then((person) => {
     response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  });
 });
 
 // Delete entry
-app.delete("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
-});
+// app.delete("/api/persons/:id", (request, response) => {
+//   const id = request.params.id;
+//   persons = persons.filter((person) => person.id !== id);
+//   response.status(204).end();
+// });
 
 // Create new entry
 app.post("/api/persons", (request, response) => {
@@ -79,26 +78,28 @@ app.post("/api/persons", (request, response) => {
       error: "Missing content",
     });
   }
-  if (persons.some((person) => person.name === body.name)) {
-    return response.status(400).json({
-      error: "Person already exists",
-    });
-  }
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  };
-  persons = persons.concat(person);
-  response.json(person);
+  });
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 });
 
 //Get Info
 app.get("/info", (request, response) => {
   const date = new Date();
-  response.send(
-    `<p>Phonebook has info for ${persons.length} people</p> <p>${date}</p>`
-  );
+  Person.find({})
+    .then((persons) => {
+      response.send(
+        `<p>Phonebook has info for ${persons.length} people</p> <p>${date}</p>`
+      );
+    })
+    .catch((error) => {
+      console.error("Error fetching persons:", error);
+      response.status(500).send("Error retrieving data");
+    });
 });
 
 const PORT = 3001;

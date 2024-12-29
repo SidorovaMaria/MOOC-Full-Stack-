@@ -9,9 +9,6 @@ const url = `mongodb+srv://sidmashav:${password}@phonebook.ai1ft.mongodb.net/?re
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url);
-\
-
-
 
 const personShema = new mongoose.Schema({
   name: String,
