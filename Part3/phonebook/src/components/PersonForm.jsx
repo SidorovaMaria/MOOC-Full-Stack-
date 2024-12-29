@@ -38,15 +38,21 @@ const PersonForm = ({ setPersons, persons, setMessage }) => {
         name: newName,
         number: phoneNumber,
       };
-      personService.create(PersonObj).then((returnedNode) => {
-        setPersons((prevState) => [...prevState, returnedNode]);
-        setMessage(`Added ${PersonObj.name}`);
-        setTimeout(() => {
-          setMessage("");
-        }, 5000);
-        setNewName("");
-        setPhoneNumber("");
-      });
+      personService
+        .create(PersonObj)
+        .then((returnedNode) => {
+          setPersons((prevState) => [...prevState, returnedNode]);
+          setMessage(`Added ${PersonObj.name}`);
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+          setNewName("");
+          setPhoneNumber("");
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+          setTimeout(() => setMessage(null), 5000);
+        });
     }
 
     // axios.post("http://localhost:3001/persons", PersonObj).then((response) => {

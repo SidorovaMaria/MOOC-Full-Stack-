@@ -8,14 +8,14 @@ const Person = require("./models/person");
 app.use(cors());
 app.use(express.json());
 
-morgan.token("body", (req) => {
-  // Only log body for POST requests (to avoid logging in every request)
-  if (req.method === "POST") {
-    return JSON.stringify(req.body); // Log the request body as a string
-  }
-  return ""; // For non-POST requests, return an empty string
-});
-app.use(morgan(":method :url :status :response-time ms - :body"));
+// morgan.token("body", (req) => {
+//   // Only log body for POST requests (to avoid logging in every request)
+//   if (req.method === "POST") {
+//     return JSON.stringify(req.body); // Log the request body as a string
+//   }
+//   return ""; // For non-POST requests, return an empty string
+// });
+// app.use(morgan(":method :url :status :response-time ms - :body"));
 
 // All persons data
 app.get("/api/persons", (request, response) => {
@@ -48,21 +48,24 @@ app.delete("/api/notes/:id", (request, response, next) => {
 });
 
 // Create new entry
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   const body = request.body;
   //if name or number is missing
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "Missing content",
-    });
-  }
+  // if (!body.name || !body.number) {
+  //   return response.status(400).json({
+  //     error: "Missing content",
+  //   });
+  // }
   const person = new Person({
     name: body.name,
     number: body.number,
   });
-  person.save().then((savedPerson) => {
-    response.json(savedPerson);
-  });
+  person
+    .save()
+    .then((savedPerson) => {
+      response.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 // Change number if user exist
@@ -114,6 +117,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
