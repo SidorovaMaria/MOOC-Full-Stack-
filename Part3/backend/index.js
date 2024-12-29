@@ -17,38 +17,6 @@ morgan.token("body", (req) => {
 });
 app.use(morgan(":method :url :status :response-time ms - :body"));
 
-// let persons = [
-//   {
-//     id: "1",
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//   },
-//   {
-//     id: "2",
-//     name: "Ada Lovelace",
-//     number: "39-44-5323523",
-//   },
-//   {
-//     id: "3",
-//     name: "Dan Abramov",
-//     number: "12-43-234345",
-//   },
-//   {
-//     id: "4",
-//     name: "Mary Poppendieck",
-//     number: "39-23-6423122",
-//   },
-//   {
-//     id: "5",
-//     name: "Maria Sidorova",
-//     number: "20-23-6423122",
-//   },
-// ];
-
-const generateId = () => {
-  return Math.floor(Math.random() * 1000000000); // Generate a random ID between 0 and 1 billion
-};
-
 // All persons data
 app.get("/api/persons", (request, response) => {
   Person.find({}).then((persons) => {
@@ -56,7 +24,7 @@ app.get("/api/persons", (request, response) => {
   });
 });
 // Get specific person
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   Person.findById(request.params.id)
     .then((person) => {
       if (person) {
@@ -66,18 +34,18 @@ app.get("/api/persons/:id", (request, response) => {
       }
     })
     .catch((error) => {
-      console.log(error);
-      // response.status(500).end();
-      response.status(400).send({ error: "malformatted id" });
+      next(error);
     });
 });
 
-// Delete entry
-// app.delete("/api/persons/:id", (request, response) => {
-//   const id = request.params.id;
-//   persons = persons.filter((person) => person.id !== id);
-//   response.status(204).end();
-// });
+//Delete entry
+app.delete("/api/notes/:id", (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
 
 // Create new entry
 app.post("/api/persons", (request, response) => {
@@ -97,6 +65,28 @@ app.post("/api/persons", (request, response) => {
   });
 });
 
+// Change number if user exist
+app.put("/api/persons/:id", (request, response, next) => {
+  const { id } = request.params;
+  const { number } = request.body;
+  console.log(id, number);
+  if (!number) {
+    return response.status(400).json({ error: "Phone number is required" });
+  }
+  const update = { number };
+  const options = { new: true, runValidators: true };
+
+  Person.findByIdAndUpdate(id, update, options)
+    .then((updatedPerson) => {
+      if (updatedPerson) {
+        response.json(updatedPerson);
+      } else {
+        response.status(404).json({ error: "Person not found" });
+      }
+    })
+    .catch((error) => next(error));
+});
+
 //Get Info
 app.get("/info", (request, response) => {
   const date = new Date();
@@ -111,6 +101,24 @@ app.get("/info", (request, response) => {
       response.status(500).send("Error retrieving data");
     });
 });
+
+// Middleware unkown endpoint
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
+
+// Middleware error
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+app.use(errorHandler);
 
 const PORT = 3001;
 app.listen(PORT, () => {
