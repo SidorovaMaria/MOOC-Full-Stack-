@@ -90,3 +90,21 @@ describe("mostBlogs Lodash", () => {
     });
   });
 });
+
+describe("mostLikes Lodash", () => {
+  test("if empty array returns 0 ", () => {
+    assert.strictEqual(listHelper.mostLikesLodash([]), 0);
+  });
+  test("return itself is one passed", () => {
+    assert.deepStrictEqual(listHelper.mostLikesLodash(listWithOneBlog), {
+      author: "Edsger W. Dijkstra",
+      likes: 5,
+    });
+  });
+  test("if many array are passed the most blogs is found", () => {
+    assert.deepStrictEqual(listHelper.mostLikesLodash(blogs), {
+      author: "Edsger W. Dijkstra",
+      likes: 17,
+    });
+  });
+});
