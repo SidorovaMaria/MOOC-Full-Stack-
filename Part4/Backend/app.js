@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const blogsRouter = require("./controllers/blogs");
 const app = express();
+
 mongoose.set("strictQuery", false);
 
 mongoose
