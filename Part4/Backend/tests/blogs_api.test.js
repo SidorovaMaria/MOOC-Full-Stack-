@@ -93,6 +93,33 @@ test("fails with status 400 if url is missing", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
+test.only("deleting a Blog is succesful", async () => {
+  const blogs = await Blog.find({});
+  const blogsAtStart = blogs.map((note) => note.toJSON());
+  const blogToDelete = blogsAtStart[0];
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogsAtEnd = await Blog.find({});
+  const blogIdsAtEnd = blogsAtEnd.map((blog) => blog.id);
+  assert.notStrictEqual(blogIdsAtEnd.includes(blogToDelete.id), true);
+});
+
+test("can update the number of likes for a Blog", async () => {
+  const blogsAtStart = await Blog.find({});
+  const blogToUpdate = blogsAtStart[0];
+  const updatedBlog = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({ likes: blogToUpdate.likes })
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await Blog.find({});
+  const updatedBlogAtEnd = blogsAtEnd.find((b) => b.id === updatedBlog.body.id);
+  assert.strictEqual(updatedBlogAtEnd.likes, blogToUpdate.likes + 1);
+  assert.strictEqual(blogsAtStart.length, blogsAtEnd.length);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });

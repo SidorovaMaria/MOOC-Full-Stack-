@@ -42,17 +42,31 @@ blogsRouter.post("/api/blogs", async (request, response) => {
   }
 });
 
+//!Deleteing a blog
+blogsRouter.delete("/api/blogs/:id", async (request, response) => {
+  await Blog.findByIdAndDelete(request.params.id);
+  response.status(204).end();
+});
+
+blogsRouter.put("/api/blogs/:id", async (request, response) => {
+  const { likes } = request.body;
+
+  try {
+    // Find the blog by ID and update the likes
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      { $inc: { likes: 1 } },
+      { new: true }
+    );
+
+    if (!updatedBlog) {
+      return response.status(404).json({ error: "Blog not found" });
+    }
+
+    response.json(updatedBlog);
+  } catch (error) {
+    response.status(400).json({ error: "Invalid ID format" });
+  }
+});
+
 module.exports = blogsRouter;
-
-// blogsRouter.post("/api/blogs", async (request, response, next) => {
-//   try {
-//     const blog = new Blog(request.body);
-
-//     const savedBlog = await blog.save();
-
-//     response.status(201).json(savedBlog);
-//   } catch (error) {
-//     console.error("Error saving blog:", error.message); // Log the error
-//     next(error); // Forward the error to the middleware
-//   }
-// });
