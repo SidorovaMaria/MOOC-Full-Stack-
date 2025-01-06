@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import blogService from "../services/blogs";
 
-const BlogForm = ({ message, setMessage, setBlogs, blogs, user }) => {
+const BlogForm = ({ setMessage, setBlogs, blogs, user, toggleVisibility }) => {
   const [blog, setBlog] = useState({
     author: "",
     title: "",
@@ -24,6 +24,7 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs, user }) => {
       });
     });
     setMessage(`Blog "${blog.title}" by ${blog.author} is succesfully added`);
+    toggleVisibility();
     setTimeout(() => {
       setMessage(null);
     }, 5000);
@@ -33,12 +34,12 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs, user }) => {
     <div className="blogForm">
       <h2>Create a New Blog</h2>
       <form onSubmit={addBlog}>
-        <p style={{ display: message === "" ? "none" : "block" }}>{message}</p>
         <div>
           <label htmlFor="title">Title:</label>
           <input
             id="title"
             type="text"
+            required
             name="title"
             value={blog.title}
             onChange={(e) =>
@@ -69,6 +70,7 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs, user }) => {
           <input
             id="url"
             type="text"
+            required
             name="url"
             value={blog.url}
             onChange={(e) =>

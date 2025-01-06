@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import "./index.css";
@@ -110,6 +110,10 @@ const App = () => {
   //   </form>
   // );
 
+  const blogFormRef = useRef();
+  const toggleVisibility = () => {
+    blogFormRef.current.toggleVisibility();
+  };
   return (
     <div>
       {!user && (
@@ -128,13 +132,16 @@ const App = () => {
           <button className="logout-btn" onClick={handleLogOut}>
             Log Out{" "}
           </button>
-          <Togglable buttonLabel="New Blog">
+          <p style={{ display: message === "" ? "none" : "block" }}>
+            {message}
+          </p>
+          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
             <BlogForm
               user={user}
-              message={message}
               setMessage={setMessage}
               setBlogs={setBlogs}
               blogs={blogs}
+              toggleVisibility={toggleVisibility}
             />
           </Togglable>
         </div>
