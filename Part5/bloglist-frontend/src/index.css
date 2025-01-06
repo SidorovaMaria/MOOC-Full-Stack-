@@ -1,7 +1,6 @@
 body {
   background: linear-gradient(180deg, darksalmon, darksalmon, darkred);
-  width: 100vw;
-  height: 100vh;
+
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
@@ -24,10 +23,9 @@ body {
   gap: 1rem;
   color: black;
   flex-direction: column;
-  margin: 10rem auto;
+  margin: 1rem auto;
 }
 .blogForm {
-  margin: 0;
   gap: 0.5rem;
 }
 .loginForm label,
@@ -37,8 +35,8 @@ body {
 .loginForm div,
 .blogForm div {
   display: flex;
+
   flex-direction: column;
-  justify-items: left;
   gap: 0.75rem;
 }
 .blogForm div {
@@ -60,10 +58,11 @@ body {
   border: 2px solid darkred;
   font-weight: 600;
   font-size: 1rem;
+  margin: 0.5rem auto;
   text-transform: capitalize;
 }
 .logout-btn {
-  margin: 1rem auto;
+  margin: 0.5rem auto;
 }
 .loggedIn {
   display: flex;
