@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 const LoginForm = ({
   handleSubmit,
   message,
@@ -8,6 +8,14 @@ const LoginForm = ({
   setUsername,
   setPassword,
 }) => {
+  LoginForm.propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+    setUsername: PropTypes.func.isRequired,
+    setPassword: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  };
   return (
     <form className="loginForm" onSubmit={handleSubmit}>
       <p style={{ padding: 0, margin: 0 }}>{message}</p>
