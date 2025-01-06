@@ -69,15 +69,43 @@ blogsRouter.delete("/api/blogs/:id", async (request, response) => {
   response.status(204).end();
 });
 
+// blogsRouter.put("/api/blogs/:id", async (request, response) => {
+//   const { likes } = request.body;
+
+//   try {
+//     // Find the blog by ID and update the likes
+//     const updatedBlog = await Blog.findByIdAndUpdate(
+//       request.params.id,
+//       { $inc: { likes: 1 } },
+//       { new: true }
+//     );
+
+//     if (!updatedBlog) {
+//       return response.status(404).json({ error: "Blog not found" });
+//     }
+
+//     response.json(updatedBlog);
+//   } catch (error) {
+//     response.status(400).json({ error: "Invalid ID format" });
+//   }
+// });
+
 blogsRouter.put("/api/blogs/:id", async (request, response) => {
-  const { likes } = request.body;
+  const { title, author, url, likes, user } = request.body;
+
+  const blogData = {
+    title,
+    author,
+    url,
+    likes,
+    user, // Ensure the user field is correctly included
+  };
 
   try {
-    // Find the blog by ID and update the likes
     const updatedBlog = await Blog.findByIdAndUpdate(
       request.params.id,
-      { $inc: { likes: 1 } },
-      { new: true }
+      blogData,
+      { new: true, runValidators: true } // Return the updated blog and validate data
     );
 
     if (!updatedBlog) {
@@ -86,7 +114,7 @@ blogsRouter.put("/api/blogs/:id", async (request, response) => {
 
     response.json(updatedBlog);
   } catch (error) {
-    response.status(400).json({ error: "Invalid ID format" });
+    response.status(400).json({ error: error.message });
   }
 });
 

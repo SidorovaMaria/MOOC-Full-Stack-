@@ -101,3 +101,10 @@ body {
   text-align: center;
   margin: 2.5rem 0 0;
 }
+
+.likes {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: left;
+}
