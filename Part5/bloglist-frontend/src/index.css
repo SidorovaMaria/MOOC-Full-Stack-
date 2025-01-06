@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(180deg, darksalmon, darksalmon, darkred);
+  background: linear-gradient(180deg, darksalmon, darksalmon);
 
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
@@ -8,12 +8,17 @@ body {
   border-radius: 10px;
   padding: 2px 1rem;
   background-color: rgba(139, 0, 0, 0.303);
-  color: white;
+  color: black;
   margin: 1rem 0;
+}
+.blog .title {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 .blog .author {
   color: black;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .loginForm,
 .blogForm {
@@ -42,6 +47,14 @@ body {
 .blogForm div {
   gap: 0.25rem;
 }
+.blog-more p {
+  font-weight: 600;
+  color: black;
+}
+.blog-more p span {
+  font-weight: 600;
+  color: darkred;
+}
 .loginForm input,
 .blogForm input {
   border: darkred 2px solid;
@@ -59,6 +72,13 @@ body {
   font-weight: 600;
   font-size: 1rem;
   margin: 0.5rem auto;
+  text-transform: capitalize;
+}
+.toggle-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  border: 2px solid darkred;
+  font-weight: 600;
   text-transform: capitalize;
 }
 .logout-btn {
