@@ -9,7 +9,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const [blog, setBlog] = useState({
     author: "",
@@ -44,9 +44,9 @@ const App = () => {
       setPassword("");
     } catch (exception) {
       console.log(exception);
-      setErrorMessage("Wrong credentials");
+      setMessage("Wrong username or password");
       setTimeout(() => {
-        setErrorMessage(null);
+        setMessage(null);
       }, 5000);
     }
   };
@@ -70,9 +70,14 @@ const App = () => {
         url: "",
       });
     });
+    setMessage(`Blog "${blog.title}" by ${blog.author} is succesfully added`);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
   };
   const loginForm = () => (
     <form className="loginForm" onSubmit={handleLogin}>
+      <p className="">{message}</p>
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -101,6 +106,7 @@ const App = () => {
 
   const blogForm = () => (
     <form className="blogForm" onSubmit={addBlog}>
+      <p>{message}</p>
       <div>
         <label htmlFor="title">Title:</label>
         <input
