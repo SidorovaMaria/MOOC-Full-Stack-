@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const blogsRouter = require("./controllers/blogs");
+const usersRouter = require("./controllers/users");
 const app = express();
 
 mongoose.set("strictQuery", false);
@@ -20,5 +21,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", blogsRouter);
+app.use("/", usersRouter);
 
 module.exports = app;
