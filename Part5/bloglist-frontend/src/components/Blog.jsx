@@ -1,6 +1,6 @@
 import Togglable from "./Togglable";
 import blogService from "../services/blogs";
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, user }) => {
   const AddLike = async () => {
     try {
       const updatedBlog = {
@@ -13,6 +13,18 @@ const Blog = ({ blog, setBlogs, blogs }) => {
       setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
     } catch (error) {
       console.error("Error updating likes:", error);
+    }
+  };
+  const deleteBlog = async () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the blog "${blog.title} by ${blog.title}"?`
+    );
+    if (!confirmed) return;
+    try {
+      await blogService.deleteBlog(blog.id);
+      setBlogs(blogs.filter((b) => b.id !== blog.id));
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -34,6 +46,11 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         </div>
       </Togglable>
       <p className="author">By {blog.author}</p>
+      {user && user.name === blog.user.name ? (
+        <button className="delete-btn" onClick={deleteBlog}>
+          Delete
+        </button>
+      ) : null}
     </div>
   );
 };

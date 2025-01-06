@@ -130,6 +130,7 @@ const App = () => {
           </button>
           <Togglable buttonLabel="New Blog">
             <BlogForm
+              user={user}
               message={message}
               setMessage={setMessage}
               setBlogs={setBlogs}
@@ -140,7 +141,13 @@ const App = () => {
       )}
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          setBlogs={setBlogs}
+          blogs={blogs}
+          user={user}
+        />
       ))}
     </div>
   );

@@ -10,6 +10,7 @@ body {
   background-color: rgba(139, 0, 0, 0.303);
   color: black;
   margin: 1rem 0;
+  position: relative;
 }
 .blog .title {
   font-size: 1.2rem;
@@ -107,4 +108,15 @@ body {
   gap: 1rem;
   align-items: center;
   justify-content: left;
+}
+.delete-btn {
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  border: 2px solid darkred;
+  font-weight: 600;
+  text-transform: capitalize;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }

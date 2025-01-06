@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
 
-const BlogForm = ({ message, setMessage, setBlogs, blogs }) => {
+const BlogForm = ({ message, setMessage, setBlogs, blogs, user }) => {
   const [blog, setBlog] = useState({
     author: "",
     title: "",
@@ -11,14 +11,14 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs }) => {
   const addBlog = (e) => {
     e.preventDefault();
     const blogObject = {
-      author: blog.author,
+      author: user.name,
       title: blog.title,
       url: blog.url,
     };
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
       setBlog({
-        author: "",
+        // author: "",
         title: "",
         url: "",
       });
@@ -49,7 +49,7 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs }) => {
             }
           />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="author">Author:</label>
           <input
             id="author"
@@ -63,7 +63,7 @@ const BlogForm = ({ message, setMessage, setBlogs, blogs }) => {
               }))
             }
           />
-        </div>
+        </div> */}
         <div>
           <label htmlFor="url">Url:</label>
           <input

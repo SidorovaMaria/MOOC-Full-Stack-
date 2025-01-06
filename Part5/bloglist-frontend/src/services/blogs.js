@@ -22,4 +22,16 @@ const update = (id, newObject) => {
   const request = axios.put(`${baseUrl}/${id}`, newObject);
   return request.then((response) => response.data);
 };
-export default { getAll, setToken, create, update };
+const deleteBlog = async (id) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    return response.status;
+  } catch (error) {
+    console.error(
+      "Failed to delete blog:",
+      error.response?.data || error.message
+    );
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};
+export default { getAll, setToken, create, update, deleteBlog };
